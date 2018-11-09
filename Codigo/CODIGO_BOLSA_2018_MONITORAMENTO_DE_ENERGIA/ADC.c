@@ -8,7 +8,7 @@
  */
 #include "ADC.h"
 void init_ADC(){
-	ADMUX  = 0b00000000;
+	ADMUX  = 0b11000000;
 	ADCSRA = 0b10000111;
 	ADCSRB = 0b00000000;
 }

@@ -11,12 +11,14 @@
 unsigned char ByteRecebido;
 unsigned long int Corrente_medida = 0;
 unsigned int ADC_LIDO = 0;
+unsigned int media_corrente = 0;
+unsigned int count=0;
 int main(void){  
 	init_board();
 	init_ADC();
 	init_USART();  
-    while (TRUE){
-		
+    while (TRUE){	
+			
     }
 	return 0;
 }
@@ -24,9 +26,17 @@ ISR(TIMER1_OVF_vect){
 	ADC_LIDO = Read_ADC(ADC3);
 	Corrente_medida = ADC_LIDO;
 	Corrente_medida /=11;
+	media_corrente += Corrente_medida;		
+	count++;	
+	if(count==40){
+		USART_printf_int(media_corrente/40);
+		USART_printfln(" A");
+		media_corrente=0;
+		count=0;
+	}else{
+		media_corrente +=Corrente_medida;		
+	}
 }
 ISR(USART_RX_vect){
-	ByteRecebido = USART_Receive();
-	USART_printf_int(Corrente_medida);
-	USART_printfln(" FATOR * UNIDADE (A)");	
+	
 }
